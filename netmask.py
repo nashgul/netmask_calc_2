@@ -18,7 +18,6 @@ def principal():
             print("CIDR: %s" % CIDR)
         elif not ip_es_valida:
 # si la IP no es válida, la pido de nuevo junto con la máscara.
-            error_ip(contenido[0])
             principal()
 # si no es válida la notación CIDR, pido máscara.
         else: 
@@ -36,11 +35,10 @@ def comprobar_ip(IP):
 # Si hay numero IP
     if valido:
         for x in valores_IP:
-            if type(x) == int:
 # Si hay un número entero IP fuera de rango
-                if 0 > int(x) > 255:
-                    error_ip(IP)
-                    principal()
+            if not 0 <= int(x) <= 255:
+                error_ip(IP)
+                return False
 # Si los 4 número son correctos
     return True
 def pedir_ip():
