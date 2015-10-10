@@ -85,29 +85,35 @@ def iniciar():
     curses.curs_set(0)
     screen.keypad(1)
     screen.refresh()
-    global posicion_inicial
-    posicion_inicial = 0
     crear_menu_principal(screen.getmaxyx())
     elementos_menu(0)
     menu_principal.refresh()
     crear_zona_de_salida(screen.getmaxyx())
+    posicion = 0
     avanza = 0
     pulsacion = 0
-    while pulsacion != curses.KEY_EXIT:
-        if pulsacion == curses.KEY_RIGHT or pulsacion == curses.KEY_DOWN:
+    while pulsacion != curses.KEY_CANCEL:
+        if pulsacion == curses.KEY_RIGHT:
             avanza = avanza + 1
         elif pulsacion == curses.KEY_LEFT or pulsacion == curses.KEY_UP:
             avanza = avanza - 1
-        elif pulsacion == curses.KEY_ENTER:
-            acceder
+        elif pulsacion == curses.KEY_DOWN:
+            acceder(posicion)
         elif pulsacion == curses.KEY_RESIZE:
             refrescar_todo()
         posicion = avanza % 3
         elementos_menu(posicion)
         menu_principal.refresh()
         pulsacion = screen.getch()
-
     curses.endwin()
+
+def acceder(posicion):
+    if int(posicion) % 3 == 2:
+        salir()
+    elif int(posicion) % 3 == 0:
+        introducir_ip()
+    elif (posicion) % 3 == 1:
+        calculadora()
 
 def refrescar_todo():
     crear_menu_principal(screen.getmaxyx())
@@ -118,7 +124,6 @@ def crear_menu_principal(tamanyo):
     menu_principal = curses.newwin(3, tamanyo[1], 0, 0)
     menu_principal.border(0)
     screen.refresh()
-
 
 def elementos_menu(posicion):
     primero = 'IP Principal'
